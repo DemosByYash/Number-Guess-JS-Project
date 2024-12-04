@@ -27,6 +27,7 @@
             <div class="entry">
                 <input type="text" id="input" placeholder="Enter a number" />
                 <button id="btn">Guess</button>
+                <button id="hint" onclick="hint()">Hint</button>
             </div>
             <p id="wrng"></p>
             <p id="guesses">No. of guesses: 0</p>
@@ -41,13 +42,17 @@
         var correct_answer = 0;
         var guess_count = 0;
 
+
         function correctans() {
             correct_answer = Math.floor(Math.random() * 100);
             console.log("Correct answer is:", correct_answer); // For debugging
         }
 
         correctans();
-
+        function hint(){
+            var add = (Math.random()*10)
+            alert(Math.floor( correct_answer + add))
+        }
 
         input.addEventListener('keydown', (event) => {
             if (event.key === 'Enter') {
