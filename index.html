@@ -1,0 +1,114 @@
+<html>
+    <head>
+        <style>
+            .container {
+                text-align: center;
+                margin: 50px;
+            }
+            .entry input {
+                width: 100px;
+                padding: 5px;
+                margin: 10px;
+            }
+            .entry button {
+                padding: 5px 10px;
+            }
+            #wrng {
+                color: red;
+                font-weight: bold;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="head">
+                <h1>Number Guessing Game</h1>
+            </div>
+            <div class="entry">
+                <input type="text" id="input" placeholder="Enter a number" />
+                <button id="btn">Guess</button>
+            </div>
+            <p id="wrng"></p>
+            <p id="guesses">No. of guesses: 0</p>
+        </div>
+
+    </body>
+    <script>
+        var head = document.querySelector('.head');
+        var wrng = document.getElementById('wrng');
+        var input = document.getElementById('input');
+        var button = document.getElementById('btn');
+        var correct_answer = 0;
+        var guess_count = 0;
+
+        function correctans() {
+            correct_answer = Math.floor(Math.random() * 100);
+            console.log("Correct answer is:", correct_answer); // For debugging
+        }
+
+        correctans();
+
+
+        input.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                guess_attempt();
+            }
+        });
+
+        button.addEventListener('click', () => {
+            guess_attempt();
+        });
+
+
+        function guess_attempt() {
+            var userGuess = Number(input.value);
+            guess_count += 1;
+
+            if (userGuess >= correct_answer - 5 && userGuess < correct_answer) {
+                wrng.innerHTML = 'You are close but low';
+            } else if (userGuess > correct_answer && userGuess <= correct_answer + 5) {
+                wrng.innerHTML = 'You are close but high';
+            } else if (userGuess === correct_answer) {
+                wrng.innerHTML = 'Correct! You guessed it!';
+                endGame();
+            } else {
+                wrng.innerHTML = 'Too much away';
+            }
+
+            document.getElementById('guesses').textContent = `No. of guesses: ${guess_count}`;
+        }
+
+
+        function endGame() {
+            var timer = document.createElement('p');
+            timer.setAttribute('style', 'margin:4px; background-color: yellow; padding: 5px;');
+            var sec = 5;
+
+            timer.innerHTML = `${sec} seconds left to Restart`;
+            head.appendChild(timer);
+
+            var countdown = setInterval(() => {
+                sec -= 1;
+                timer.innerHTML = `${sec} seconds left to Restart`;
+
+                if (sec === 0) {
+                    clearInterval(countdown);
+                    timer.remove();
+                    restartGame();
+                }
+            }, 1000);
+
+            button.disabled = true; 
+        }
+
+        function restartGame() {
+            correctans();
+            guess_count = 0;
+            input.value = '';
+            wrng.textContent = '';
+            document.getElementById('guesses').textContent = 'No. of guesses: 0';
+            button.disabled = false;
+        }
+    </script>
+</html>
